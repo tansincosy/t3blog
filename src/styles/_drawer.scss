@@ -15,11 +15,14 @@ $drawer: drawer;
     transition: transform $duration $ease-in-out-circ;
   }
   &-mask {
-    @apply absolute top-0 left-0 h-0 w-full opacity-70;
+    @apply absolute top-0 left-0 h-0 w-full bg-shadow opacity-70;
     transition: opacity $duration $ease-in-out-circ, height 0s ease $duration;
   }
   &-content-wrapper {
-    @apply absolute rounded-2xl;
+    @apply absolute rounded-2xl bg-surface;
+  }
+  &-content-wrapper-hidden {
+    @apply hidden;
   }
   &-content {
     overflow: auto;

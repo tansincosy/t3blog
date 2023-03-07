@@ -1,21 +1,18 @@
 import path from "path";
 import babelPluginMacros from "babel-plugin-macros";
-import babelPluginStyld from "babel-plugin-styled-components"
-import babelSyntaxTypescript from "@babel/plugin-syntax-typescript"
+import babelPluginStyledComponent from "babel-plugin-styled-components";
+import babelSyntaxTypescript from "@babel/plugin-syntax-typescript";
 // The folders containing files importing twin.macro
-
-function getIncludedDirs() {
-  return [
-    path.resolve("src","components"),
-    path.resolve("src","pages"),
-    path.resolve("src","styles"),
-  ];
-}
 
 /**
  * @param {import("next").NextConfig} nextConfig
  */
 export function withTwin(nextConfig) {
+  const includeDirs = [
+    path.resolve("src", "components"),
+    path.resolve("src", "pages"),
+    path.resolve("src", "styles"),
+  ];
   return {
     ...nextConfig,
     /**
@@ -28,7 +25,7 @@ export function withTwin(nextConfig) {
       config.module.rules = config.module.rules || [];
       config.module.rules.push({
         test: /\.(tsx|ts)$/,
-        include: getIncludedDirs(),
+        include: includeDirs,
         use: [
           options.defaultLoaders.babel,
           {
@@ -37,18 +34,8 @@ export function withTwin(nextConfig) {
               sourceMaps: dev,
               plugins: [
                 babelPluginMacros,
-                [
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  babelPluginStyld,
-                  { ssr: true, displayName: true },
-                ],
-                [
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  babelSyntaxTypescript,
-                  { isTSX: true }, 
-                ],
+                [babelPluginStyledComponent, { ssr: true, displayName: true }],
+                [babelSyntaxTypescript, { isTSX: true }],
               ],
             },
           },

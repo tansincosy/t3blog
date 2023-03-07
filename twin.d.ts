@@ -1,3 +1,4 @@
+// types/twin.d.ts
 import "twin.macro";
 import { type CSSProp, type css as cssImport } from "styled-components";
 import type styledImport from "styled-components";
@@ -29,3 +30,7 @@ declare global {
     }
   }
 }
+
+declare module "@babel/plugin-syntax-typescript";
+
+declare module "babel-plugin-styled-components";
