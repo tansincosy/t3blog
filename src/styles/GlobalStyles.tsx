@@ -8,6 +8,9 @@ const CustomStyles = createGlobalStyle({
     WebkitTapHighlightColor: theme`colors.purple.500`,
     ...tw`antialiased`,
   },
+  ".bytemd": {
+    height: "calc(100vh - 200px)",
+  },
 });
 
 const GlobalStyles = () => (

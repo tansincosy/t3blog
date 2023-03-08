@@ -10,6 +10,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@bytemd/plugin-breaks": "^1.20.2",
+    "@bytemd/plugin-frontmatter": "^1.20.2",
+    "@bytemd/plugin-gemoji": "^1.20.2",
+    "@bytemd/plugin-gfm": "^1.20.2",
+    "@bytemd/plugin-highlight": "^1.20.2",
+    "@bytemd/plugin-math": "^1.20.2",
+    "@bytemd/plugin-medium-zoom": "^1.20.2",
+    "@bytemd/plugin-mermaid": "^1.20.2",
+    "@bytemd/react": "^1.20.2",
     "@material/material-color-utilities": "^0.2.4",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.9.0",
@@ -26,7 +35,6 @@
     "react-dom": "18.2.0",
     "styled-components": "^5.3.8",
     "superjson": "1.9.1",
-    "vditor": "^3.9.0",
     "zod": "^3.20.6"
   },
   "devDependencies": {

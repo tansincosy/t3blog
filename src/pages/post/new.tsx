@@ -1,38 +1,57 @@
 import { type NextPage } from "next";
-import "vditor/dist/index.css";
-import Vditor from "vditor";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Drawer from "rc-drawer";
 import { Button, Layout, Input } from "~/components";
+import breaks from "@bytemd/plugin-breaks";
+import frontmatter from "@bytemd/plugin-frontmatter";
+import gemoji from "@bytemd/plugin-gemoji";
+import gfm from "@bytemd/plugin-gfm";
+import highlight from "@bytemd/plugin-highlight";
+import byteMath from "@bytemd/plugin-math";
+import zoom from "@bytemd/plugin-medium-zoom";
+import mermaid from "@bytemd/plugin-mermaid";
+import { Editor } from "@bytemd/react";
 import "twin.macro";
+import { api } from "~/utils";
+import debounce from "lodash/debounce";
+const plugins = [
+  gfm(),
+  breaks(),
+  gemoji(),
+  highlight(),
+  byteMath(),
+  zoom(),
+  mermaid(),
+  frontmatter(),
+];
 
 const NewPost: NextPage = () => {
-  const [vd, setVd] = useState<any>();
-  const vidtor = useRef<HTMLDivElement>(null);
+  const postDraft = api.post.getPostById.useQuery("") || "";
+  const postMutation = api.post.savePostDraft.useMutation();
+  const [value, setValue] = useState("");
   const [confirmPublish, setConfigPublish] = useState<boolean>(false);
 
   useEffect(() => {
-    if (vidtor.current) {
-      const vidtorInstant = new Vditor(vidtor.current, {
-        after: () => {
-          setVd(vidtorInstant.getValue());
-        },
-        cache: {
-          enable: false,
-        },
-        debugger: true,
-      });
-    }
+    setValue(postDraft.data?.content || "");
   }, []);
 
   const onClose = () => {
-    console.log("sssss");
     setConfigPublish(false);
   };
 
   const beginPublish = () => {
     setConfigPublish(true);
   };
+
+  const editorOnChange = debounce((markContent: string) => {
+    console.log("2s callback");
+    postMutation.mutate({
+      id: postDraft.data?.id,
+      title: "",
+      content: markContent,
+    });
+    setValue(markContent);
+  }, 2000);
 
   return (
     <Layout>
@@ -46,7 +65,7 @@ const NewPost: NextPage = () => {
           </Button>
         </div>
       </section>
-      <div ref={vidtor} />
+      <Editor value={value} plugins={plugins} onChange={editorOnChange} />
       <Drawer
         open={confirmPublish}
         onClose={onClose}
