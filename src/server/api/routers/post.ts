@@ -28,12 +28,16 @@ export const postRouter = createTRPCRouter({
           where: {
             id: input.id,
           },
-        }); // TODO 更新
+          select: {
+            id: true,
+          },
+        });
       }
       return ctx.prisma.post.create({
         data: {
           title: input.title,
           content: input.content,
+          description: "",
         },
         select: {
           id: true,

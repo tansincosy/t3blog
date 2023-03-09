@@ -9,7 +9,7 @@ const CustomStyles = createGlobalStyle({
     ...tw`antialiased`,
   },
   ".bytemd": {
-    height: "calc(100vh - 200px)",
+    height: "100vh",
   },
 });
 

@@ -68,10 +68,10 @@ model VerificationToken {
 model Post {
     id           String       @id @default(cuid())
     title        String
-    description  String?
+    description  String?      @default("")
     discoverable Boolean      @default(false)
     content      String
-    publish_date DateTime?
+    publish_date DateTime?    @default(now())
     PostOnTag    PostOnTags[]
     Category     Category?    @relation(fields: [category_id], references: [id])
     category_id  String?
