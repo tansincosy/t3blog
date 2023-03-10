@@ -5,7 +5,11 @@ import { api } from "~/utils/api";
 import "~/styles/_drawer.scss";
 import "bytemd/dist/index.css";
 import "~/styles/_markdown-view.scss";
+import "~/styles/_select.scss";
 import GlobalStyles from "../styles/GlobalStyles";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -13,10 +17,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <>
+      <section className={inter.className}>
         <GlobalStyles />
         <Component {...pageProps} />
-      </>
+      </section>
     </SessionProvider>
   );
 };

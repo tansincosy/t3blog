@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import { useEffect, useState } from "react";
 import Drawer from "rc-drawer";
-import { Button, Layout, Input, Card, Fab } from "~/components";
+import { Button, Layout, Input, Card, Fab, Icon } from "~/components";
 import breaks from "@bytemd/plugin-breaks";
 import frontMatter from "@bytemd/plugin-frontmatter";
 import gemoji from "@bytemd/plugin-gemoji";
@@ -15,6 +15,8 @@ import "twin.macro";
 import { api } from "~/utils";
 import { useRouter } from "next/router";
 import throttle from "lodash/throttle";
+import Select, { Option } from "rc-select";
+
 const plugins = [
   gfm(),
   breaks(),
@@ -29,7 +31,7 @@ const plugins = [
 const NewPost: NextPage = () => {
   const route = useRouter();
   const draftId = route.query.draft_id as string;
-  const postDraft = api.post.getPostById.useQuery(draftId || "");
+  const postDraft = api.post.draft.useQuery(draftId || "");
   const postMutation = api.post.savePostDraft.useMutation({
     onMutate(variables) {
       if (draftId === "new") {
@@ -84,9 +86,9 @@ const NewPost: NextPage = () => {
       <Editor value={value} plugins={plugins} onChange={editorOnChange} />
       <Fab
         onClick={beginPublish}
-        icon="edit"
-        tw="fixed right-2 bottom-2 z-40"
-        size="medium"
+        icon="publish"
+        tw="fixed right-20 bottom-20 z-40 text-3xl"
+        size="large"
       ></Fab>
       <Drawer
         open={confirmPublish}
@@ -94,8 +96,8 @@ const NewPost: NextPage = () => {
         autoFocus={true}
         prefixCls="drawer"
       >
-        <div tw="title-small box-border h-14 px-4 leading-[3.5rem] text-on-surface-variant ">
-          <Card tw="h-64 w-64">
+        <div tw="title-small box-border py-4 space-y-3 leading-[3.5rem] text-on-surface-variant flex flex-col items-center">
+          <Card tw="w-64 h-32">
             <input
               type="file"
               placeholder="请上传封面图片"
@@ -103,16 +105,28 @@ const NewPost: NextPage = () => {
               id="upload-image"
             />
             <label
-              tw="w-full h-full block cursor-pointer"
+              tw="w-full h-full block cursor-pointer text-center"
+              className="material-symbols-outlined"
               htmlFor="upload-image"
             >
-              封面图片区域
+              <Icon
+                name="add_photo_alternate"
+                tw="text-9xl text-surface-variant"
+              ></Icon>
             </label>
           </Card>
-          <Card>标签</Card>
-          <Card>分类</Card>
-          <Card>摘要</Card>
-          <Button type="filled" tw="w-full">
+          <Card tw="h-36 w-full">
+            <div>
+              <Select tw="w-full">
+                <Option value="jack">jack</Option>
+                <Option value="lucy">lucy</Option>
+                <Option value="yiminghe">yiminghe</Option>
+              </Select>
+            </div>
+          </Card>
+          <Card tw="h-36 w-full">分类</Card>
+          <Card tw="h-36 w-full">摘要</Card>
+          <Button type="filled" tw="w-full m-14">
             确认发布
           </Button>
         </div>

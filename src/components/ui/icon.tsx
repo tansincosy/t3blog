@@ -2,29 +2,26 @@ import React from "react";
 
 type IconProps = {
   name: string;
-  type?: "fill" | "line";
   className?: string;
   onClick?: React.MouseEventHandler<HTMLElement>;
 };
 
-export const Icon: React.FC<IconProps> = ({
-  name,
-  type,
-  className,
-  onClick,
-}) => {
+export const Icon: React.FC<IconProps> = ({ name, className, onClick }) => {
   return (
     <i
       className={
-        className ? `ri-${name}-${type} ${className}` : `ri-${name}-${type}`
+        className
+          ? ` ${className} material-symbols-outlined`
+          : `material-symbols-outlined`
       }
       onClick={onClick}
       aria-hidden="true"
-    />
+    >
+      {name}
+    </i>
   );
 };
 
 Icon.defaultProps = {
   className: "",
-  type: "fill",
 };

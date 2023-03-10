@@ -2,7 +2,14 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  getPostById: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+  draft: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+    return ctx.prisma.post.findFirst({
+      where: {
+        id: input,
+      },
+    });
+  }),
+  getId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
     return ctx.prisma.post.findUnique({
       where: {
         id: input,
