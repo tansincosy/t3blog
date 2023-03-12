@@ -7,3 +7,4 @@ export * from "./ui/checkbox";
 export * from "./ui/avatar";
 export * from "./common/layout";
 export * from "./ui/input";
+export * from "./common/back_to_top";

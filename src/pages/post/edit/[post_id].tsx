@@ -30,15 +30,9 @@ const plugins = [
 
 const NewPost: NextPage = () => {
   const route = useRouter();
-  const draftId = route.query.draft_id as string;
-  const postDraft = api.post.draft.useQuery(draftId || "");
-  const postMutation = api.post.savePostDraft.useMutation({
-    onMutate(variables) {
-      if (draftId === "new") {
-        return { ...postDraft.data, ...variables };
-      }
-    },
-  });
+  const post_id = route.query.post_id as string;
+  const postDraft = api.post.draft.useQuery(post_id || "");
+  const postMutation = api.post.savePostDraft.useMutation();
   const [value, setValue] = useState<string>("");
   const [confirmPublish, setConfigPublish] = useState<boolean>(false);
   const [articleTitle, setArticleTitle] = useState<string>("");
@@ -62,11 +56,6 @@ const NewPost: NextPage = () => {
   };
 
   const editorOnChange = throttle((markContent: string) => {
-    postMutation.mutate({
-      id: postMutation.data?.id,
-      title: articleTitle,
-      content: markContent,
-    });
     setValue(markContent);
   }, 2000);
 
