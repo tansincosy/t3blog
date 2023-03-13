@@ -16,6 +16,17 @@ export const postRouter = createTRPCRouter({
       },
     });
   }),
+  post20Latest: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.post.findMany({
+      where: {
+        discoverable: true,
+      },
+      orderBy: {
+        publish_date: "desc",
+      },
+      take: 20,
+    });
+  }),
   savePostDraft: publicProcedure
     .input(
       z.object({

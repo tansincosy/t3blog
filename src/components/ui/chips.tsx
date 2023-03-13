@@ -1,6 +1,7 @@
 import { twClass } from "~/utils";
 import React from "react";
 import { Icon } from "./icon";
+import "twin.macro";
 
 type ChipType = "assist" | "filter" | "input" | "suggestion";
 
@@ -29,17 +30,12 @@ export const Chips: React.FC<ChipsProps> = ({
   return (
     <div
       onClick={onClick}
-      className={twClass(
-        chipsClasses[type],
-        "border border-outline bg-surface text-on-surface label-large cursor-pointer z-10 box-border px-4 h-8 rounded-md inline-flex items-center",
-        className
-      )}
+      className={className}
+      tw="label-large z-10 box-border inline-flex
+       h-8 cursor-pointer items-center rounded-md border border-outline bg-surface px-4 text-on-surface hover:bg-on-surface"
     >
       {icon && (
-        <Icon
-          name={icon}
-          className="text-primary text-[1.125rem] mr-2 -ml-2"
-        ></Icon>
+        <Icon name={icon} tw="text-primary text-[1.125rem] mr-2 -ml-2"></Icon>
       )}
       {children}
     </div>

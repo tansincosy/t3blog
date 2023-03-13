@@ -47,7 +47,7 @@ const BackToTopBtn: React.FC = () => {
       {visibleBackTopBtn && (
         <Fab
           tw="fixed bottom-4 right-4 z-10"
-          icon="arrow-up"
+          icon="vertical_align_top"
           color="secondary"
           onClick={backToTopHandle}
         />

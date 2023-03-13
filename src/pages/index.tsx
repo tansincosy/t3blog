@@ -7,6 +7,8 @@ import { api } from "~/utils/api";
 import { Card, Chips, Layout } from "~/components";
 
 const Home: NextPage = () => {
+  const homeResult = api.home.get.useQuery();
+  const posts = api.post.post20Latest.useQuery();
   return (
     <>
       <Head>
@@ -15,66 +17,78 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <div tw="overflow-hidden w-full h-80 md:h-96 lg:h-[34rem] relative mt-16 container mx-auto">
-          <div
-            tw="h-full w-full bg-cover bg-center dark:brightness-50 rounded-3xl"
-            style={{
-              background: "black",
-            }}
-          ></div>
-          <div tw="absolute top-0 z-10 flex h-full w-full flex-col items-center justify-center ">
-            <h1 tw="display-small text-inverse-primary md:display-large">
-              sample
-            </h1>
-            <h4 tw="title-large mt-2 text-inverse-primary md:headline-medium">
-              this header
-            </h4>
+        {homeResult.data ? (
+          <div tw="overflow-hidden w-full h-80 md:h-96 lg:h-[34rem] relative mt-16 container mx-auto">
+            <div
+              tw="h-full w-full bg-cover bg-center rounded-3xl bg-no-repeat"
+              style={{
+                backgroundImage: `url(${homeResult.data.cover})`,
+              }}
+            ></div>
+            <div tw="absolute top-0 z-10 flex h-full w-full flex-col items-center justify-center ">
+              <h1 tw="display-small text-inverse-primary md:display-large">
+                {homeResult.data.name}
+              </h1>
+              <h4 tw="title-large mt-2 text-inverse-primary md:headline-medium">
+                {homeResult.data.description}
+              </h4>
+            </div>
           </div>
-        </div>
+        ) : (
+          []
+        )}
         <main tw="container mx-auto items-stretch mt-8">
           <div tw="display-small md:display-medium lg:display-large text-on-surface">
             最新博客
           </div>
-          <div>
-            <Card
-              key="ds"
-              type="filled"
-              tw="z-10 m-4 flex w-full shrink cursor-pointer flex-col overflow-hidden md:w-auto md:basis-80 md:pb-5"
-            >
-              <div title="sample1" tw="flex md:block" onClick={() => {}}>
-                <div tw="h-24 w-24 overflow-hidden rounded-xl md:h-48 md:w-full">
-                  <div
-                    style={{
-                      background: `black`,
-                    }}
-                    tw="h-full w-full bg-cover bg-center bg-no-repeat"
-                  ></div>
-                </div>
-                <div tw="box-border flex flex-col justify-center px-6">
-                  <h1 tw="mt-1 text-on-surface text-[3rem] md:mt-5">
-                    post title
-                  </h1>
-                  <h2 tw="title-large text-secondary md:mt-2">post descript</h2>
-                  <div tw="md:mt-2">
-                    {["tag1", "tah2"].map((tag) => {
-                      return (
-                        <Chips
-                          onClick={(event) => {
-                            event.stopPropagation();
-                          }}
-                          tw="z-10 m-1"
-                          icon="tag"
-                          key="222"
-                          type="suggestion"
-                        >
-                          {tag}
-                        </Chips>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </Card>
+          <div tw="grid grid-cols-1 md:(grid-cols-2) gap-2 xl:(grid-cols-3 gap-4) 2xl:(grid-cols-4 gap-4)">
+            {Array.isArray(posts.data)
+              ? posts.data.map((post) => {
+                  return (
+                    <Card
+                      key={post.id}
+                      type="filled"
+                      tw="z-10 m-4 flex shrink cursor-pointer flex-col overflow-hidden w-auto basis-80 pb-5"
+                    >
+                      <div title="sample1" onClick={() => {}}>
+                        <div tw="overflow-hidden rounded-xl h-48 w-full bg-no-repeat">
+                          <div
+                            style={{
+                              backgroundImage: `url(${post.cover})`,
+                            }}
+                            tw="h-full w-full bg-cover bg-center bg-no-repeat"
+                          ></div>
+                        </div>
+                        <div tw="box-border flex flex-col justify-center px-6">
+                          <h1 tw="text-on-surface text-[3rem] mt-5">
+                            {post.title}
+                          </h1>
+                          <h2 tw="title-large text-secondary md:mt-2">
+                            {post.description}
+                          </h2>
+                          <div tw="md:mt-2">
+                            {["tag1", "tah2"].map((tag) => {
+                              return (
+                                <Chips
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                  }}
+                                  tw="z-10 m-1"
+                                  icon="tag"
+                                  key="222"
+                                  type="suggestion"
+                                >
+                                  {tag}
+                                </Chips>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })
+              : []}
           </div>
         </main>
       </Layout>
