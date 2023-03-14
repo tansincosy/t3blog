@@ -7,9 +7,9 @@ import "bytemd/dist/index.css";
 import "~/styles/_markdown-view.scss";
 import "~/styles/_select.scss";
 import GlobalStyles from "../styles/GlobalStyles";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Roboto({ subsets: ["latin"], weight: "500" });
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -17,10 +17,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <section className={inter.className}>
-        <GlobalStyles />
-        <Component {...pageProps} />
-      </section>
+      <style jsx global>{`
+        html {
+          font-family: ${inter.style.fontFamily};
+        }
+      `}</style>
+      <GlobalStyles />
+      <Component {...pageProps} />
     </SessionProvider>
   );
 };

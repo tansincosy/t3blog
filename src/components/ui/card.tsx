@@ -5,7 +5,7 @@ interface CardProps {
 }
 
 export const Card = styled.div<CardProps>(({ type = "elevated" }) => [
-  tw`overflow-hidden shadow-lg relative box-border rounded-xl`,
+  tw`overflow-hidden shadow-lg relative box-border rounded-2xl`,
   type === "elevated" &&
     tw`bg-surface shadow-md hover:after:w-[200%] hover:after:h-[200%] hover:after:bg-primary hover:after:opacity-[.08]
     hover:after:absolute hover:after:-z-10 hover:after:top-[-50%] hover:after:left-[-50%] hover:shadow-md

@@ -5,6 +5,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import "twin.macro";
 import { api } from "~/utils/api";
 import { Card, Chips, Layout } from "~/components";
+import Image from "next/image";
 
 const Home: NextPage = () => {
   const homeResult = api.home.get.useQuery();
@@ -18,13 +19,13 @@ const Home: NextPage = () => {
       </Head>
       <Layout>
         {homeResult.data ? (
-          <div tw="overflow-hidden w-full h-80 md:h-96 lg:h-[34rem] relative mt-16 container mx-auto">
-            <div
-              tw="h-full w-full bg-cover bg-center rounded-3xl bg-no-repeat"
-              style={{
-                backgroundImage: `url(${homeResult.data.cover})`,
-              }}
-            ></div>
+          <div tw="overflow-hidden w-full h-80 md:h-96 lg:h-[34rem] relative mt-16 container mx-auto px-4 box-border">
+            <Image
+              fill
+              src={homeResult?.data?.cover}
+              alt="Post picture"
+              tw="[object-fit: cover] rounded-3xl"
+            ></Image>
             <div tw="absolute top-0 z-10 flex h-full w-full flex-col items-center justify-center ">
               <h1 tw="display-small text-inverse-primary md:display-large">
                 {homeResult.data.name}
@@ -38,54 +39,59 @@ const Home: NextPage = () => {
           []
         )}
         <main tw="container mx-auto items-stretch mt-8">
-          <div tw="display-small md:display-medium lg:display-large text-on-surface">
+          <div tw="display-small md:display-medium lg:display-large text-on-surface px-4">
             最新博客
           </div>
           <div tw="grid grid-cols-1 md:(grid-cols-2) gap-2 xl:(grid-cols-3 gap-4) 2xl:(grid-cols-4 gap-4)">
             {Array.isArray(posts.data)
               ? posts.data.map((post) => {
                   return (
-                    <Card
+                    <Link
+                      passHref
+                      legacyBehavior
+                      href={`/post/${post.id}`}
                       key={post.id}
-                      type="filled"
-                      tw="z-10 m-4 flex shrink cursor-pointer flex-col overflow-hidden w-auto basis-80 pb-5"
                     >
-                      <div title="sample1" onClick={() => {}}>
-                        <div tw="overflow-hidden rounded-xl h-48 w-full bg-no-repeat">
-                          <div
-                            style={{
-                              backgroundImage: `url(${post.cover})`,
-                            }}
-                            tw="h-full w-full bg-cover bg-center bg-no-repeat"
-                          ></div>
-                        </div>
-                        <div tw="box-border flex flex-col justify-center px-6">
-                          <h1 tw="text-on-surface text-[3rem] mt-5">
-                            {post.title}
-                          </h1>
-                          <h2 tw="title-large text-secondary md:mt-2">
-                            {post.description}
-                          </h2>
-                          <div tw="md:mt-2">
-                            {["tag1", "tah2"].map((tag) => {
-                              return (
-                                <Chips
-                                  onClick={(event) => {
-                                    event.stopPropagation();
-                                  }}
-                                  tw="z-10 m-1"
-                                  icon="tag"
-                                  key="222"
-                                  type="suggestion"
-                                >
-                                  {tag}
-                                </Chips>
-                              );
-                            })}
+                      <a tw="z-10 m-4 flex shrink cursor-pointer flex-col overflow-hidden w-auto basis-80 pb-5">
+                        <Card key={post.id} type="filled">
+                          <div title={post.title}>
+                            <div tw="overflow-hidden rounded-xl h-48 w-full bg-no-repeat relative">
+                              <Image
+                                fill
+                                src={post?.cover || ""}
+                                alt="Post picture"
+                                tw="[object-fit: cover]"
+                              ></Image>
+                            </div>
+                            <div tw="box-border flex flex-col justify-center px-6">
+                              <h1 tw="text-on-surface mt-5 display-small">
+                                {post.title}
+                              </h1>
+                              <h2 tw="title-medium text-secondary md:mt-2">
+                                {post.description}
+                              </h2>
+                              <div tw="md:mt-2">
+                                {["tag1", "tah2"].map((tag) => {
+                                  return (
+                                    <Chips
+                                      onClick={(event) => {
+                                        event.stopPropagation();
+                                      }}
+                                      tw="z-10 m-1"
+                                      icon="tag"
+                                      key="222"
+                                      type="suggestion"
+                                    >
+                                      {tag}
+                                    </Chips>
+                                  );
+                                })}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </Card>
+                        </Card>
+                      </a>
+                    </Link>
                   );
                 })
               : []}
