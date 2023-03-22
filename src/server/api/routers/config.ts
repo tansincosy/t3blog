@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-export const homeRouter = createTRPCRouter({
+export const configRouter = createTRPCRouter({
   get: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.home.findFirst({});
+    return ctx.prisma.config.findFirst({});
   }),
 });

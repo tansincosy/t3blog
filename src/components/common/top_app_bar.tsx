@@ -106,15 +106,11 @@ export const TopAppBar = ({ appTitle = "", category = {} }: TopAppBarProps) => {
   };
 
   const targetHomePage = () => {
-    // push("/");
+    push("/");
   };
 
   const openSearchDialog = () => {
     setSearchVisible(true);
-  };
-
-  const onCloseHandle = (url?: string) => {
-    setSearchVisible(false);
   };
 
   const [debugSide, setDebugSide] = useState<boolean>(false);

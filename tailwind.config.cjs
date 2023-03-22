@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const plugin = require("tailwindcss/plugin");
 
@@ -42,8 +44,6 @@ const fontUnit = (/** @type {number} */ size) => {
   return `${size / 16}rem`;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 const typography = plugin(({ addComponents, theme }) => {
   addComponents({
     ".display-large": {

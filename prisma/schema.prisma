@@ -50,6 +50,7 @@ model Session {
 model User {
     id            String    @id @default(cuid())
     name          String?
+    password      String?
     email         String?   @unique
     emailVerified DateTime?
     image         String?
@@ -78,11 +79,11 @@ model Post {
     cover        String?
 }
 
-model Home {
-    id          String @id @default(cuid())
-    name        String
-    description String
-    cover       String
+model Config {
+    id               String @id @default(cuid())
+    blog_name        String
+    blog_description String
+    home_cover       String
 }
 
 model Tag {

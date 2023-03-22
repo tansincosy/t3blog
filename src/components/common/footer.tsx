@@ -1,5 +1,7 @@
 import { Icon } from "../ui/icon";
 import "twin.macro";
+import { Button } from "../ui/button";
+import { useRouter } from "next/router";
 
 type FootLink = {
   name: string;
@@ -9,12 +11,21 @@ type FootLink = {
 };
 
 const Footer: React.FC<{ footers: FootLink[] }> = ({ footers }) => {
+  const router = useRouter();
   const clickHandle = (footerObj: FootLink) => {
     window.open(footerObj.url, "_blank");
   };
   return (
     <footer tw="w-full flex flex-col justify-between items-center bg-surface-variant text-on-surface-variant flex-none h-52">
       <div tw="flex space-x-8 flex-1 w-full text-center justify-center items-center border-b border-surface">
+        <Button
+          type="text"
+          onClick={() => {
+            router.push("/sign_in");
+          }}
+        >
+          showLogin
+        </Button>
         {Array.isArray(footers) &&
           footers.map((footer) => {
             return (
@@ -34,7 +45,7 @@ const Footer: React.FC<{ footers: FootLink[] }> = ({ footers }) => {
             );
           })}
       </div>
-      <div className="title-medium flex h-16 w-full items-center justify-center">
+      <div tw="title-medium flex h-16 w-full items-center justify-center">
         &copy; {new Date().getFullYear()} tansincosy
       </div>
     </footer>

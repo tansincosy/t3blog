@@ -6,6 +6,7 @@ import "~/styles/_drawer.scss";
 import "bytemd/dist/index.css";
 import "~/styles/_markdown-view.scss";
 import "~/styles/_select.scss";
+import "~/styles/_dialog.scss";
 import GlobalStyles from "../styles/GlobalStyles";
 import { Roboto } from "next/font/google";
 
