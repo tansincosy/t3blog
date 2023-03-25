@@ -21,7 +21,7 @@ const Footer: React.FC<{ footers: FootLink[] }> = ({ footers }) => {
         <Button
           type="text"
           onClick={() => {
-            router.push("/sign_in");
+            router.push("/auth/sign_in");
           }}
         >
           showLogin

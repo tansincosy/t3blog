@@ -60,7 +60,7 @@ const ButtonWrapper = styled(BaseButton)<ButtonWrapperProps>(
     active:after:w-[200%] active:after:h-[200%] active:after:bg-primary
     active:after:opacity-[.12] active:after:absolute active:after:top-[-50%] active:after:left-[-50%]`,
     mdType === "tonal" &&
-      tw`bg-secondary-container text-on-secondary-container label-large 
+      tw`!bg-secondary-container text-on-secondary-container label-large 
  hover:after:w-[200%] hover:after:h-[200%] hover:after:bg-on-secondary-container
  hover:after:opacity-[.08] hover:after:absolute hover:after:top-[-50%]
  hover:after:left-[-50%] hover:shadow-md
@@ -99,7 +99,7 @@ const TextSpan = styled.span<{ icon?: React.ReactNode }>(({ icon }) => [
   icon && tw`ml-1`,
 ]);
 
-const IconSpan = styled.span<{ icon?: React.ReactNode }>(({ icon }) => [
+const IconSpan = styled.div<{ icon?: React.ReactNode }>(({ icon }) => [
   tw`text-[1.125rem] w-5 h-[1.125rem]`,
 ]);
 
@@ -121,7 +121,7 @@ export const Button: React.FC<ButtonProps> = ({
       className={className}
       btnChildNode={children}
     >
-      {icon && <IconSpan icon={icon}>{icon}</IconSpan>}
+      {icon && <IconSpan>{icon}</IconSpan>}
       {children && <TextSpan icon={icon}>{children}</TextSpan>}
     </ButtonWrapper>
   );
