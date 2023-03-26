@@ -27,7 +27,7 @@ const BaseButton = tw.button`inline-flex justify-center items-center
 
 const ButtonWrapper = styled(BaseButton)<ButtonWrapperProps>(
   ({ mdType, disabled, icon, btnChildNode }) => [
-    icon ? tw`pl-4 pr-6` : tw`pl-6 pr-6`,
+    icon ? tw`h-[46px]` : tw`pl-6 pr-6`,
     !btnChildNode && tw`px-3`,
     mdType === "elevated" &&
       tw`!bg-surface text-primary label-large shadow-sm
@@ -100,7 +100,7 @@ const TextSpan = styled.span<{ icon?: React.ReactNode }>(({ icon }) => [
 ]);
 
 const IconSpan = styled.div<{ icon?: React.ReactNode }>(({ icon }) => [
-  tw`text-[1.125rem] w-5 h-[1.125rem]`,
+  tw`text-2xl w-8 h-[1.125rem] overflow-hidden`,
 ]);
 
 export const Button: React.FC<ButtonProps> = ({

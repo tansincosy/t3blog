@@ -3,12 +3,13 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { api } from "~/utils/api";
 import "~/styles/_drawer.scss";
-import "bytemd/dist/index.css";
 import "~/styles/_markdown-view.scss";
 import "~/styles/_select.scss";
 import "~/styles/_dialog.scss";
+import "bytemd/dist/index.css";
 import GlobalStyles from "../styles/GlobalStyles";
 import { Roboto } from "next/font/google";
+import { SnackbarProvider } from "~/components";
 
 const inter = Roboto({ subsets: ["latin"], weight: "500" });
 
@@ -18,13 +19,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <style jsx global>{`
-        html {
-          font-family: ${inter.style.fontFamily};
-        }
-      `}</style>
-      <GlobalStyles />
-      <Component {...pageProps} />
+      <SnackbarProvider>
+        <style jsx global>{`
+          html {
+            font-family: ${inter.style.fontFamily};
+          }
+        `}</style>
+        <GlobalStyles />
+        <Component {...pageProps} />
+      </SnackbarProvider>
     </SessionProvider>
   );
 };

@@ -7,13 +7,25 @@ import { getCsrfToken, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next";
 import { type LoginForm } from "types/login-input.types";
 import { useRouter } from "next/router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const schema = z
+  .object({
+    username: z.string().min(3).max(20),
+    password: z.string().min(6).max(20),
+    csrfToken: z.string(),
+  })
+  .required();
 
 const SignIn: NextPage<{ csrfToken: string }> = ({ csrfToken }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm>();
+  } = useForm<LoginForm>({
+    resolver: zodResolver(schema),
+  });
   const route = useRouter();
 
   const signErrorQuery = route.query;
@@ -65,9 +77,7 @@ const SignIn: NextPage<{ csrfToken: string }> = ({ csrfToken }) => {
               trailingIcon={<Icon name="account_circle"></Icon>}
               placeholder="用户名"
               errors={errors}
-              {...register("username", {
-                required: true,
-              })}
+              {...register("username")}
             ></Input>
             <Input
               type="password"

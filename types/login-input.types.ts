@@ -3,3 +3,9 @@ export type LoginForm = {
   password: string;
   csrfToken: string;
 };
+
+export type RegisterForm = {
+  "confirm-password": string;
+  username: string;
+  password: string;
+};

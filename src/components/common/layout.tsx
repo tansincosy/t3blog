@@ -8,6 +8,7 @@ import BackToTopBtn from "./back_to_top";
 import { TopAppBar } from "./top_app_bar";
 import "twin.macro";
 import Footer from "./footer";
+import { Snackbar } from "..";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -36,6 +37,7 @@ export const Layout = ({
       <section tw="bg-background flex-1 pb-20 box-border">{children}</section>
       {!hiddenTopFooter && <Footer footers={[]} />}
       <BackToTopBtn />
+      <Snackbar></Snackbar>
     </div>
   );
 };

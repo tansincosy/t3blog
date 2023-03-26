@@ -115,11 +115,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {errors && errors[name] && (
-          <InputError>
-            {errors &&
-              errors[name]?.type === "required" &&
-              `${placeholder} 不可缺`}
-          </InputError>
+          <InputError>{errors[name]?.message?.toString()}</InputError>
         )}
       </div>
     );
