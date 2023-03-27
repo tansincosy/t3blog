@@ -6,15 +6,16 @@ export const Snackbar: React.FC = () => {
   return (
     <>
       {isOpen && (
-        <div tw="bg-inverse-surface rounded-sm h-12">
+        <div tw="bg-inverse-surface rounded-sm h-12 flex item-center">
           <span tw="text-inverse-on-surface body-medium ml-4">{message}</span>
           {actionText && (
-            <span
-              tw="text-inverse-primary label-large ml-4 cursor-pointer"
+            <Button 
+              tw="!text-inverse-primary"
               onClick={onAction}
+              type="text"
             >
               {actionText}
-            </span>
+            </Button>
           )}
         </div>
       )}
