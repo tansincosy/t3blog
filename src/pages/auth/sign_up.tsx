@@ -58,6 +58,7 @@ const SignUp: NextPage = () => {
   const { mutate: addMutate } = api.user.add.useMutation({
     onError: (error) => {
       console.log("error", error.message);
+      open(error.message)
     },
     onSuccess: () => {
       route.push("/");
