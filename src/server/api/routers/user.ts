@@ -1,6 +1,8 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { env } from "~/env.mjs";
+import { getPbkdf2 } from "~/utils";
 export const userRouter = createTRPCRouter({
   count: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.user.count({});
@@ -22,10 +24,11 @@ export const userRouter = createTRPCRouter({
           cause: "Only one user allowed",
         });
       }
+      const pbkPassword = await getPbkdf2(input.password, env.AUTH_PRIMARY_KEY);
       return ctx.prisma.user.create({
         data: {
           name: input.username,
-          password: input.password,
+          password: pbkPassword,
         },
       });
     }),

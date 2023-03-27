@@ -7,10 +7,10 @@ import {
 } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 import { type LoginForm } from "types/login-input.types";
-
+import { env } from "~/env.mjs";
+import { comparePbkdf2 } from "~/utils";
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -74,18 +74,22 @@ export const authOptions: NextAuthOptions = {
         // const generateCsrfToken = await getCsrfToken({ req });
         // console.log("server crsf", generateCsrfToken);
         // console.log("client crsf", csrfToken);
-        console.log("username =", username);
-        console.log("password =", password);
         const userInfo = await prisma.user.findFirst({
           where: {
             name: username,
           },
         });
-
-        if (userInfo?.password === password) {
+        if (!userInfo) {
+          return null;
+        }
+        const isPasswordValid = await comparePbkdf2(
+          password,
+          env.AUTH_PRIMARY_KEY,
+          userInfo?.password || ""
+        );
+        if (isPasswordValid) {
           return userInfo;
         }
-
         // Return null if user data could not be retrieved
         return null;
       },

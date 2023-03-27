@@ -37,7 +37,7 @@ export const Layout = ({
       <section tw="bg-background flex-1 pb-20 box-border">{children}</section>
       {!hiddenTopFooter && <Footer footers={[]} />}
       <BackToTopBtn />
-      <Snackbar></Snackbar>
+      <Snackbar />
     </div>
   );
 };

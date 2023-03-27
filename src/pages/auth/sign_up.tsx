@@ -5,7 +5,6 @@ import { api } from "~/utils/api";
 import { Button, Icon, Input, Layout, useSnackbar } from "~/components";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/router";
-import type { GetServerSidePropsContext } from "next";
 import { prisma } from "~/server/db";
 import { type RegisterForm } from "types/login-input.types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,11 +53,9 @@ const SignUp: NextPage = () => {
   });
 
   const { open } = useSnackbar();
-
   const { mutate: addMutate } = api.user.add.useMutation({
     onError: (error) => {
-      console.log("error", error.message);
-      open(error.message)
+      open && open(error.message);
     },
     onSuccess: () => {
       route.push("/");
@@ -116,20 +113,6 @@ const SignUp: NextPage = () => {
               <Button nativeType="submit" type="filled" tw="w-full">
                 注册
               </Button>
-              <Button
-                onClick={() =>
-                  open({
-                    message: "ssss",
-                    actionText: "ssss",
-                    onAction: () => {
-                      console.log("ssss");
-                    },
-                    notClose: true,
-                  })
-                }
-              >
-                ssss
-              </Button>
             </div>
           </form>
         </div>
@@ -140,9 +123,8 @@ const SignUp: NextPage = () => {
 
 export default SignUp;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  // const userCount = await prisma.user.count();
-  const userCount = 0;
+export async function getServerSideProps() {
+  const userCount = await prisma.user.count();
   if (userCount === 1) {
     return {
       redirect: {
