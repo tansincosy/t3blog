@@ -1,52 +1,65 @@
 import { createContext, useContext, useState } from "react";
 
-interface SnackbarOptions {
+interface SnackbarProviderType {
   message: string;
-  duration?: number;
-  notClose?: boolean;
+  isOpen?: boolean;
   onClose?: () => void;
   onAction?: () => void;
+  open?:(message: string,
+        actionText?:string,
+        onAction?: ()=> void,
+        cusParma?:CustomParams) => void;
   actionText?: string;
+  closeHandle?:() => void:
+}
+interface CustomParams {
+  duration?: number; 
+  onClose?:() => void;
+  autoDimiss?: boolean;
 }
 
-const Snackbar = createContext({} as any);
+const Snackbar = createContext({
+      message:""
+} as SnackbarProviderType);
+
 let timeId: NodeJS.Timeout;
 export function SnackbarProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setOpen] = useState<boolean>();
   const [message, setMessage] = useState<string>();
   const [actionText, setText] = useState<string>();
+  const [action, setAction] = useState();
+  const [close, setClose] = useState();
 
-  let shareOnAction: () => void;
-  let shareOnClose: () => void;
   const sharedState = {
     isOpen,
     setOpen,
     actionText,
     message,
-    open: (opts: SnackbarOptions) => {
+    open: (message, actionText, onAction,{duration,onClose，autoDimiss= true}) => {
       setOpen(true);
-      setMessage(opts.message);
-      setText(opts.actionText);
-      if (!opts.notClose) {
+      setMessage(message);
+      if (actionText) setText(actionText);
+      if (autoDismiss) {
         clearTimeout(timeId);
         timeId = setTimeout(() => {
           setOpen(false);
-          opts.onClose && opts.onClose();
-        }, opts.duration || 3000);
+          onClose && onClose();
+        }, duration || 3000);
       }
-      if (opts.onAction) {
-        shareOnAction = opts.onAction;
-      }
-      if (opts.onClose) {
-        shareOnClose = opts.onClose;
-      }
+      if (onAction) setAction(onAction);
+      if (onClose) setClose(onClose);
     },
     onAction: () => {
-      console.log("shareOnAction", shareOnAction);
-      shareOnAction && shareOnAction();
+      setAction(null);
+      action && action();
     },
     onClose: () => {
-      shareOnClose && shareOnClose();
+      setClose(null)
+      close && close();
+    },
+    closeHandle: () => {
+      setOpen(false);
+      close && close();
     },
   };
 
@@ -54,5 +67,5 @@ export function SnackbarProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useSnackbar() {
-  return useContext(Snackbar);
+  return useContext<SnackbarProviderType>(Snackbar);
 }
