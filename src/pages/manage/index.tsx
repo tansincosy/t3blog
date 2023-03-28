@@ -1,12 +1,51 @@
 import { type NextPage } from "next";
 import "twin.macro";
 import { api } from "~/utils/api";
-import { Card, Chips, Icon, Input, Layout } from "~/components";
+import { Card, Button, Icon, Input, Layout } from "~/components";
 import Image from "next/image";
 import { prisma } from "~/server/db";
 
+
+
 const Manage: NextPage = () => {
   const onSearchHandle = () => {};
+  const {open} = useSnackbar();
+  const editItem =(blog)=>{
+    
+  }
+  const delItem = (blog) => {
+    open(`${blog.title} 删除成功！`)
+  }
+  const blogTableCols = [
+    {title: "标题",
+     dataIndex: "title",
+     key: "title",},
+    {title:"发布日期",
+     dataIndex: "pushlish_date",
+     key: "publish_date"},
+    {title:"标签",
+     dataIndex: "tag",
+     key: "tag"},
+    {title:"操作",
+     dataIndex: "",
+     key: "operation",
+     render:(data)=> {
+       return <>
+         <Button onClick={()=>{
+         editItem(data)
+         }}>编辑</Button>
+         <Button 
+          tw="text-error bg-on-error"        onClick={()=>{delItem(data)}}>删除</Button>
+       </>
+     }
+    }
+  ];
+
+
+
+
+
+
   return (
     <>
       <Layout>
