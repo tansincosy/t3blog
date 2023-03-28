@@ -27,6 +27,29 @@ export const postRouter = createTRPCRouter({
       take: 20,
     });
   }),
+  pageList: publicProcedure
+    .input(
+      z.object({
+        number: z.number().default(1),
+        size: z.number().default(20),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const posts = ctx.prisma.post.findMany({
+        orderBy: {
+          publish_date: "desc",
+        },
+        skip: (input.number - 1) * input.size,
+        take: input.size,
+      });
+      const postCounts = ctx.prisma.post.count({});
+      const [data, count] = await ctx.prisma.$transaction([posts, postCounts]);
+      return {
+        data,
+        count,
+        input,
+      };
+    }),
   savePostDraft: publicProcedure
     .input(
       z.object({
