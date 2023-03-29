@@ -7,11 +7,28 @@ import Table from "rc-table";
 import { useEffect, useState } from "react";
 import Pagination from "rc-pagination";
 import Drawer from "rc-drawer";
+import { useRouter } from "next/router";
 
 const Manage: NextPage = () => {
   const paginationMute = api.post.pageList.useMutation();
+
+  const delApi = api.post.delPostById.useMutation({
+    onSuccess: () => {
+      setConfirm(false);
+      paginationMute.mutate({
+        number: paginationMute.data?.input.number,
+        size: paginationMute.data?.input.size,
+      });
+      open && open("删除成功");
+    },
+    onError: () => {
+      open && open("删除失败");
+    },
+  });
   const { open } = useSnackbar();
   const [showConfirm, setConfirm] = useState<boolean>(false);
+  const nextRoute = useRouter();
+  const [readyDelInfo, setReadyDelInfo] = useState<Post>();
 
   const blogTableCols = [
     { title: "标题", dataIndex: "title", key: "title" },
@@ -56,33 +73,34 @@ const Manage: NextPage = () => {
   };
 
   const editItem = (post: Post) => {
-    console.log("editItem", post);
+    nextRoute.push(`/post/edit/${post.id}`);
   };
 
   const delItem = (post: Post) => {
-    console.log("delItem", post);
     setConfirm(true);
-    if (open) open(`${post.title} 删除成功！`);
+    setReadyDelInfo(post);
   };
 
   useEffect(() => {
-    console.log("sssss");
     paginationMute.mutate({
       number: 1,
       size: 10,
     });
-  }, [Manage.displayName]);
+  }, []);
 
   return (
     <>
       <Layout>
         <section tw="container mx-auto items-stretch mt-16">
-          <Input
-            onChange={onSearchHandle}
-            trailingIcon={<Icon name="search"></Icon>}
-          ></Input>
-          <div tw="display-small md:display-medium lg:display-large text-on-surface px-4">
-            博客列表
+          <div tw="flex justify-between">
+            <div tw="display-small md:display-medium lg:display-large text-on-surface px-4">
+              博客列表
+            </div>
+            <Input
+              placeholder="请输入搜索的博客名"
+              onChange={onSearchHandle}
+              trailingIcon={<Icon name="search"></Icon>}
+            ></Input>
           </div>
           <div>
             <Table
@@ -92,6 +110,7 @@ const Manage: NextPage = () => {
             ></Table>
             <Pagination
               tw="mt-8"
+              current={paginationMute.data?.input.number}
               onChange={onPageChange}
               showTotal={(total) => `Total ${total} items`}
               total={paginationMute.data?.count}
@@ -103,7 +122,18 @@ const Manage: NextPage = () => {
             prefixCls="drawer"
             maskClosable
           >
-            dsadsa
+            {readyDelInfo?.title}
+            <Button onClick={() => setConfirm(false)}>否</Button>
+            <Button
+              type="filled"
+              onClick={() => {
+                if (readyDelInfo?.id) {
+                  delApi.mutate(readyDelInfo?.id);
+                }
+              }}
+            >
+              确定
+            </Button>
           </Drawer>
         </section>
       </Layout>

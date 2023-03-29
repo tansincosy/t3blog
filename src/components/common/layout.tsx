@@ -27,15 +27,23 @@ export const Layout = ({
     const systemDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-
-    applyTheme(theme, { target: document.body, dark: false });
+    applyTheme(theme, { target: document.body, dark: systemDark });
   }, [themeColor]);
-
   return (
     <div tw="absolute flex left-0 right-0 bottom-0 top-0 flex-col">
       {!hiddenTopFooter && <TopAppBar></TopAppBar>}
       <section tw="bg-background flex-1 pb-20 box-border">{children}</section>
-      {!hiddenTopFooter && <Footer footers={[]} />}
+      {!hiddenTopFooter && (
+        <Footer
+          footers={[
+            {
+              name: "关于",
+              icon: "github",
+              url: "dss",
+            },
+          ]}
+        />
+      )}
       <BackToTopBtn />
       <Snackbar />
     </div>

@@ -28,7 +28,7 @@ const plugins = [
 const Post: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const postDetail = api.post.getId.useQuery((id as string) || "");
+  const postDetail = api.post.getPostById.useQuery((id as string) || "");
   return (
     <Layout>
       {postDetail.isLoading ? (
@@ -47,12 +47,14 @@ const Post: NextPage = () => {
               </div>
             </header>
             <div tw="w-full h-80 md:h-96 lg:h-[34rem] relative mt-16 container mx-auto px-4">
-              <Image
-                fill
-                src={postDetail?.data?.cover}
-                alt="Post picture"
-                tw="[object-fit: cover] rounded-3xl"
-              ></Image>
+              {postDetail?.data?.cover && (
+                <Image
+                  fill
+                  src={postDetail?.data?.cover || ""}
+                  alt="Post picture"
+                  tw="[object-fit: cover] rounded-3xl"
+                ></Image>
+              )}
             </div>
             <Viewer
               tw="px-4"

@@ -16,7 +16,7 @@ const Footer: React.FC<{ footers: FootLink[] }> = ({ footers }) => {
     window.open(footerObj.url, "_blank");
   };
   return (
-    <footer tw="w-full flex flex-col justify-between items-center bg-surface-variant text-on-surface-variant flex-none h-52">
+    <footer tw="w-full flex flex-col justify-between items-center bg-background text-on-surface-variant flex-none h-52">
       <div tw="flex space-x-8 flex-1 w-full text-center justify-center items-center border-b border-surface">
         <Button
           type="text"

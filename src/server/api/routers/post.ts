@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
   draft: publicProcedure.input(z.string()).query(({ input, ctx }) => {
@@ -9,7 +13,7 @@ export const postRouter = createTRPCRouter({
       },
     });
   }),
-  getId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+  getPostById: publicProcedure.input(z.string()).query(({ input, ctx }) => {
     return ctx.prisma.post.findUnique({
       where: {
         id: input,
@@ -27,7 +31,16 @@ export const postRouter = createTRPCRouter({
       take: 20,
     });
   }),
-  pageList: publicProcedure
+  delPostById: protectedProcedure
+    .input(z.string())
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.post.delete({
+        where: {
+          id: input,
+        },
+      });
+    }),
+  pageList: protectedProcedure
     .input(
       z.object({
         number: z.number().default(1),
@@ -50,7 +63,7 @@ export const postRouter = createTRPCRouter({
         input,
       };
     }),
-  savePostDraft: publicProcedure
+  savePostDraft: protectedProcedure
     .input(
       z.object({
         title: z.string(),

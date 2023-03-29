@@ -31,18 +31,16 @@ const plugins = [
 const NewPost: NextPage = () => {
   const route = useRouter();
   const post_id = route.query.post_id as string;
-  const postDraft = api.post.draft.useQuery(post_id || "");
-  const postMutation = api.post.savePostDraft.useMutation();
+  const postDraft = api.post.getPostById.useQuery(post_id || "");
   const [value, setValue] = useState<string>("");
   const [confirmPublish, setConfigPublish] = useState<boolean>(false);
   const [articleTitle, setArticleTitle] = useState<string>("");
   useEffect(() => {
-    if (route.query.draft_id) {
+    if (post_id) {
       setValue(postDraft.data?.content || "");
       setArticleTitle(postDraft.data?.title || "");
     }
-  }, [postDraft.data?.content]);
-
+  }, [postDraft.data, post_id]);
   const onClose = () => {
     setConfigPublish(false);
   };
@@ -65,7 +63,6 @@ const NewPost: NextPage = () => {
         <div tw="flex-1">
           <Input
             type="text"
-            id="article-title"
             placeholder="请输入文章标题"
             value={articleTitle}
             onChange={onInputChange}

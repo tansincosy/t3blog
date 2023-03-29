@@ -67,12 +67,14 @@ const Home: NextPage<{ userCount: number }> = ({ userCount }) => {
                         <Card key={post.id} type="filled">
                           <div title={post.title}>
                             <div tw="overflow-hidden rounded-xl h-48 w-full bg-no-repeat relative">
-                              <Image
-                                fill
-                                src={post?.cover || ""}
-                                alt="Post picture"
-                                tw="[object-fit: cover]"
-                              ></Image>
+                              {post?.cover && (
+                                <Image
+                                  fill
+                                  src={post?.cover || ""}
+                                  alt="Post picture"
+                                  tw="[object-fit: cover]"
+                                ></Image>
+                              )}
                             </div>
                             <div tw="box-border flex flex-col justify-center px-6">
                               <h1 tw="text-on-surface mt-5 display-small">
@@ -90,7 +92,7 @@ const Home: NextPage<{ userCount: number }> = ({ userCount }) => {
                                       }}
                                       tw="z-10 m-1"
                                       icon="tag"
-                                      key="222"
+                                      key={tag}
                                       type="suggestion"
                                     >
                                       {tag}
